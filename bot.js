@@ -40,6 +40,15 @@ my owner get back online! You can
 check my abilites by *!help* command
         `);
         console.log(`${ chat.name }`, 'request for', `${ content }`);
+    } else if (content === '!help') {
+        message.reply(`
+_Help section of ${ OWNER }\`s Whatsapp Bot!_
+*Aviliable commands are*
+*!alive* - 🏃‍♀️ _Show status of bot_
+*!help* - 🙋‍♂️ _Show this menu of bot_
+        `);
+        console.log(`${ chat.name }`, 'request for', `${ content }`);
+        // set stats command response
     }
 });
 
