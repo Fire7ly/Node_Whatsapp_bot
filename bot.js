@@ -1,4 +1,6 @@
 // import system modules
+const os = require('os');
+const process = require('process');
 const package = require('./package.json');
 const axios = require('axios');
 const fetch = require('node-fetch');
@@ -7,9 +9,18 @@ require('dotenv').config()
 // import 3rd party modules from npm 
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
+const checkDiskSpace = require('check-disk-space').default
+const osInfo = require("@felipebutcher/node-os-info");
+
+
+// import own modules
+const { psup, sysup,} = require('./utils/uptime');
+const { memstat } = require('./utils/mem');
+const { cpu_core } = require ('./utils/cpu');
 
 
 // Define runtime veriables
+const currentPath = process.cwd();
 const OWNER = package.author || "fire7ly"
 const weatherToken = process.env.WEATHER_API_TOKEN
 const weatherURL = "https://api.openweathermap.org/data/2.5/weather"
@@ -49,6 +60,7 @@ check my abilites by *!help* command
 _Help section of ${ OWNER }\`s Whatsapp Bot!_
 *Aviliable commands are*
 *!alive* - 🏃‍♀️ _Show status of bot_
+*!stats* - 📈 _Show statistics of the bot & Host Machine_
 *!help* - 🙋‍♂️ _Show this menu of bot_
 *!joke* - 🙃 _Send random jokes_
 *!quote* - 📋 _Send quote in chat_
@@ -115,7 +127,7 @@ Example : !weather _*Delhi*_`)
             if (body.cod == '404' || body.cod == '401') {
                 message.reply(`Error : ${ body.cod } 
 *${ body.message }*`)
-            } else {363
+            } else {
                 console.log(`Successfully fetched weather for ${ city_name }`);
                 message.reply(`*Description* : ${ body.weather[0].description } 
 *City* : ${ body.name },${ body.sys.country }
@@ -132,6 +144,61 @@ Example : !weather _*Delhi*_`)
                 // *Sunset* :
             }
         }
+    }  else if (content == '!stats') {
+        
+        // get uptime for bot process
+        let { ps_hour, ps_min, ps_sec } = psup();
+
+        // get uptime for system
+        let { os_hour, os_min, os_sec } = sysup();
+
+        // get memory (ram) usage status
+        let { totram, totfram, totused } = memstat();
+
+        // get Processor cores
+        let { pcore, vcore } = cpu_core();
+
+        // get disk free used and total space
+        checkDiskSpace(currentPath).then((diskSpace) => {
+
+            // get ram usage in percentage
+            osInfo.mem(memory => {
+
+                // get cpu usage in percentage
+                osInfo.cpu(cpu => {
+
+                    // get disk usage in percentage
+                    osInfo.disk(disk => {
+                        var tot_disk_size = parseFloat(diskSpace.size / (1024 * 1024 * 1024)).toFixed(2);
+                        var free_disk_size = parseFloat(diskSpace.free / (1024 * 1024 * 1024)).toFixed(2);
+                        var used_per_mem = Math.round(memory * 100)
+                        var used_per_cpu = Math.round(cpu * 100)
+                        var used_per_disk = Math.round(disk * 100)
+                        var used_disk_size = parseFloat(tot_disk_size - free_disk_size).toFixed(2);
+                        message.reply(`
+*Bot Version* : ${ package.version }
+*Owner* : @${ OWNER }
+*Bot Uptime* : ${ ps_hour }h ${ ps_min }m ${ ps_sec }s
+*OS Uptime* : ${ os_hour }h ${ os_min }m ${ os_sec }s
+*Total Disk Space* : ${ tot_disk_size }GB
+*Used* : ${ used_disk_size }GB | *Free* : ${ free_disk_size }GB
+*CPU* : ${ used_per_cpu }%
+*RAM* : ${ used_per_disk }%
+*Disk* : ${ used_per_mem }%
+*Physical Cores* : ${ pcore }
+*Total Cores* : ${ vcore }
+*Total Memory* : ${ totram }GB
+*Free Memory* : ${ totfram }GB
+*Used Memory* : ${ totused }GB
+                        `);
+                        // *SWAP* :
+                        // *Upload* :
+                        // *Download* :
+                        console.log(`${ chat.name }`, 'request for', `${ content }`);
+                    })
+                })
+            })
+        })
     }
 });
 
