@@ -4,7 +4,7 @@ const axios = require('axios');
 const fetch  = require('node-fetch');
 
 // import 3rd party modules from npm 
-const { Client, LocalAuth } = require('whatsapp-web.js');
+const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 
 
@@ -51,6 +51,7 @@ _Help section of ${ OWNER }\`s Whatsapp Bot!_
 *!quote* - 📋 _Send quote in chat_
 *!cinfo* - ℹ️ _Show information of client_
 *!ginfo* - ℹ️ _Send group information_
+*!meme* - 🤣 _Send random memes_
         `);
         console.log(`${ chat.name }`, 'request for', `${ content }`);
         // set stats command response
@@ -89,6 +90,11 @@ _Help section of ${ OWNER }\`s Whatsapp Bot!_
             message.reply('This command can only be used in a group!');
             console.log(`can\`t fullfill request for ${ content } by ${ chat.name } because of current chat is not a group`);
         }
+    } else if (content === '!meme') {
+        console.log(`${ chat.name }`, 'request for', `${ content }`);
+        const meme = await axios("https://meme-api.herokuapp.com/gimme")
+            .then(res => res.data)
+        client.sendMessage(message.from, await MessageMedia.fromUrl(meme.url))
     }
 });
 
