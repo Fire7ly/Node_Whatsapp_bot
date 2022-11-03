@@ -1,8 +1,6 @@
 // import system modules
-const os = require('os');
 const process = require('process');
 const package = require('./package.json');
-const axios = require('axios');
 const fetch = require('node-fetch');
 require('dotenv').config()
 
@@ -11,6 +9,7 @@ const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const checkDiskSpace = require('check-disk-space').default
 const osInfo = require("@felipebutcher/node-os-info");
+const axios = require('axios');
 
 
 // import own modules
@@ -53,7 +52,7 @@ Hi I am ${ OWNER }\`s Whatsapp Bot 🤖
 I can do some enterainment untill 
 my owner get back online! You can 
 check my abilites by *!help* command
-        `);
+`);
         console.log(`${ chat.name }`, 'request for', `${ content }`);
     } else if (content === '!help') {
         message.reply(`
@@ -68,7 +67,7 @@ _Help section of ${ OWNER }\`s Whatsapp Bot!_
 *!ginfo* - ℹ️ _Send group information_
 *!meme* - 🤣 _Send random memes_
 *!weather* - 🌡️ _Send today weather info_
-        `);
+`);
         console.log(`${ chat.name }`, 'request for', `${ content }`);
         // set stats command response
     } else if (content === "!joke") {
@@ -89,7 +88,7 @@ _Help section of ${ OWNER }\`s Whatsapp Bot!_
 *User name* : ${ info.pushname }
 *My number* : ${ info.wid.user }
 *Platform* : ${ info.platform }
-    `);
+`);
     } else if (message.body === '!ginfo') {
         if (chat.isGroup) {
             message.reply(`
@@ -98,7 +97,7 @@ _Help section of ${ OWNER }\`s Whatsapp Bot!_
 *Description* : ${ chat.description }
 *Created At* : ${ chat.createdAt.toString() }
 *Participant count* : ${ chat.participants.length }
-            `);
+`);
             console.log(`${ chat.name }`, 'request for', `${ content }`);
             // Created By: ${chat.owner.user}
 
@@ -118,18 +117,23 @@ _Help section of ${ OWNER }\`s Whatsapp Bot!_
         console.log(`${ chat.name } request for weather`);
         if (city_name == null || city_name == '' || city_name == "!weather") {
             console.log(`There is no city name provided with weather command!`);
-            message.reply(`opps! no city name provided! 
+            message.reply(`
+opps! no city name provided! 
 please provide city name
-Example : !weather _*Delhi*_`)
+Example : !weather _*Delhi*_
+`)
         } else {
             const resp = await fetch(`${ weatherURL }?q=${ city_name }&appid=${ weatherToken }&units=metric`)
             const body = await resp.json()
             if (body.cod == '404' || body.cod == '401') {
-                message.reply(`Error : ${ body.cod } 
-*${ body.message }*`)
+                message.reply(`
+Error : ${ body.cod } 
+*${ body.message }*
+`)
             } else {
                 console.log(`Successfully fetched weather for ${ city_name }`);
-                message.reply(`*Description* : ${ body.weather[0].description } 
+                message.reply(`
+*Description* : ${ body.weather[0].description } 
 *City* : ${ body.name },${ body.sys.country }
 *lon* : ${ body.coord.lon } | *lat*: ${ body.coord.lat }
 *Temp* : ${ body.main.temp }°C
@@ -190,7 +194,7 @@ Example : !weather _*Delhi*_`)
 *Total Memory* : ${ totram }GB
 *Free Memory* : ${ totfram }GB
 *Used Memory* : ${ totused }GB
-                        `);
+`);
                         // *SWAP* :
                         // *Upload* :
                         // *Download* :
