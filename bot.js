@@ -3,14 +3,20 @@ const package = require('./package.json');
 
 
 // import 3rd party modules from npm 
-const { Client } = require('whatsapp-web.js');
+const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 
 
 // Define runtime veriables
 const OWNER = package.author || "fire7ly"
 
-const client = new Client();
+const client = new Client({
+    authStrategy: new LocalAuth(),
+    puppeteer: {
+        ignoreDefaultArgs: ['--disable-extensions'],
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+    }
+});
 
 client.on('qr', qr => {
     qrcode.generate(qr, {small: true});
