@@ -50,6 +50,7 @@ _Help section of ${ OWNER }\`s Whatsapp Bot!_
 *!joke* - 🙃 _Send random jokes_
 *!quote* - 📋 _Send quote in chat_
 *!cinfo* - ℹ️ _Show information of client_
+*!ginfo* - ℹ️ _Send group information_
         `);
         console.log(`${ chat.name }`, 'request for', `${ content }`);
         // set stats command response
@@ -69,9 +70,25 @@ _Help section of ${ OWNER }\`s Whatsapp Bot!_
         client.sendMessage(message.from, `
 *Connection info*
 *User name* : ${ info.pushname }
-*My number* : ${ info.me.user }
+*My number* : ${ info.wid.user }
 *Platform* : ${ info.platform }
     `);
+    } else if (message.body === '!ginfo') {
+        if (chat.isGroup) {
+            message.reply(`
+*Group Details*
+*Name* : ${ chat.name }
+*Description* : ${ chat.description }
+*Created At* : ${ chat.createdAt.toString() }
+*Participant count* : ${ chat.participants.length }
+            `);
+            console.log(`${ chat.name }`, 'request for', `${ content }`);
+            // Created By: ${chat.owner.user}
+
+        } else {
+            message.reply('This command can only be used in a group!');
+            console.log(`can\`t fullfill request for ${ content } by ${ chat.name } because of current chat is not a group`);
+        }
     }
 });
 
