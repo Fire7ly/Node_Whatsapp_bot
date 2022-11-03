@@ -49,6 +49,7 @@ _Help section of ${ OWNER }\`s Whatsapp Bot!_
 *!help* - 🙋‍♂️ _Show this menu of bot_
 *!joke* - 🙃 _Send random jokes_
 *!quote* - 📋 _Send quote in chat_
+*!cinfo* - ℹ️ _Show information of client_
         `);
         console.log(`${ chat.name }`, 'request for', `${ content }`);
         // set stats command response
@@ -63,6 +64,14 @@ _Help section of ${ OWNER }\`s Whatsapp Bot!_
         const JsonData = await apiData.json();
         message.reply(`*${ JsonData[Math.floor(Math.random() * JsonData.length)].text }*`)
         console.log(`${ chat.name }`, 'request for', `${ content }`);
+    } else if (message.body === '!cinfo') {
+        let info = client.info;
+        client.sendMessage(message.from, `
+*Connection info*
+*User name* : ${ info.pushname }
+*My number* : ${ info.me.user }
+*Platform* : ${ info.platform }
+    `);
     }
 });
 
