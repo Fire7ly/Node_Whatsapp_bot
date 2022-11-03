@@ -1,6 +1,6 @@
 // import system modules
 const package = require('./package.json');
-
+const axios = require('axios');
 
 // import 3rd party modules from npm 
 const { Client, LocalAuth } = require('whatsapp-web.js');
@@ -46,9 +46,16 @@ _Help section of ${ OWNER }\`s Whatsapp Bot!_
 *Aviliable commands are*
 *!alive* - 🏃‍♀️ _Show status of bot_
 *!help* - 🙋‍♂️ _Show this menu of bot_
+*!joke* - 🙃 _Send random jokes_
         `);
         console.log(`${ chat.name }`, 'request for', `${ content }`);
         // set stats command response
+    } else if (content === "!joke") {
+        const joke = await axios("https://v2.jokeapi.dev/joke/Any?safe-mode")
+            .then(res => res.data)
+        const jokeMsg = await client.sendMessage(message.from, joke.setup || joke.joke)
+        if (joke.delivery) setTimeout(function () { jokeMsg.reply(joke.delivery) }, 5000)
+        console.log(`${ chat.name }`, 'request for', `${ content }`);
     }
 });
 
