@@ -1,6 +1,7 @@
 // import system modules
 const package = require('./package.json');
 const axios = require('axios');
+const fetch  = require('node-fetch');
 
 // import 3rd party modules from npm 
 const { Client, LocalAuth } = require('whatsapp-web.js');
@@ -47,6 +48,7 @@ _Help section of ${ OWNER }\`s Whatsapp Bot!_
 *!alive* - 🏃‍♀️ _Show status of bot_
 *!help* - 🙋‍♂️ _Show this menu of bot_
 *!joke* - 🙃 _Send random jokes_
+*!quote* - 📋 _Send quote in chat_
         `);
         console.log(`${ chat.name }`, 'request for', `${ content }`);
         // set stats command response
@@ -55,6 +57,11 @@ _Help section of ${ OWNER }\`s Whatsapp Bot!_
             .then(res => res.data)
         const jokeMsg = await client.sendMessage(message.from, joke.setup || joke.joke)
         if (joke.delivery) setTimeout(function () { jokeMsg.reply(joke.delivery) }, 5000)
+        console.log(`${ chat.name }`, 'request for', `${ content }`);
+    } else if (message.body === '!quote') {
+        const apiData = await fetch('https://type.fit/api/quotes')
+        const JsonData = await apiData.json();
+        message.reply(`*${ JsonData[Math.floor(Math.random() * JsonData.length)].text }*`)
         console.log(`${ chat.name }`, 'request for', `${ content }`);
     }
 });
