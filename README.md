@@ -7,11 +7,11 @@
  ##### install all node dependencies
  ```npm install```
   ##### Get weather api from : [openweather](https://openweathermap.org/api)
-  ``` > rename .env_sample to .env ```
+ > ``` rename .env_sample to .env ```
   
-  copy your api code to .env file
-  
-  ``` > Eg:- WEATHER_API_TOKEN=Your_Api_Key ```
+ > copy your api code to .env file
+
+  > ```  Eg:- WEATHER_API_TOKEN=Your_Api_Key ```
  ##### run the bot ->
  * Run ```npm run dev``` to use dev mode of bot. (auto restart if file change)
  * Run ```npm run start``` to use bot in normal mode. (auto restart not supported)
