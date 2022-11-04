@@ -8,6 +8,10 @@
     "dev": "nodemon bot.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fire7ly/Node_Whatsapp_bot.git"
+  },
   "keywords": [],
   "author": "fire7ly",
   "license": "ISC",
@@ -19,5 +23,9 @@
     "nodemon": "^2.0.20",
     "qrcode-terminal": "^0.12.0",
     "whatsapp-web.js": "^1.18.2"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/Fire7ly/Node_Whatsapp_bot/issues"
+  },
+  "homepage": "https://github.com/Fire7ly/Node_Whatsapp_bot#readme"
 }
